@@ -5,8 +5,32 @@ Generates 3D models as .obj with material .mtl using the files refered in the *o
 The Dockerfile automatically copy the *exporter.py*
 This file generate and combine all the visible objects of the scene to generate the 3D model.
 
-Once the Docker image is installe only have to configure the paths in *object_maker.sh*
+To build the Docker Image manually using Dockerfile do:
+```
+cd qmblender-docker/
+```
+And then:
+```
+docker build . --tag qmblender
+```
+Once the Docker image is installe only have to configure the paths in *object_maker.sh* where the templates
+are stored and where all the models will be stored too.
 
-Then execute as:
+Change the path here, remember to copy the *object_maker.sh* inside of this folder
+```
+#Create a folder to store models
+mkdir -p /Users/edgarfigueiras/Desktop/models
+```
 
+Change the path for the used in the last step, only change until the ":/media/"
+```
+for value in templates/*.blend
+do
+    docker run --rm -v /Users/edgarfigueiras/Desktop/models:/media/ qmblender /media/"$value" --python /usr/local/blender/exporter.py
+done
+```
+
+Then execute the bash script:
+```
 ./object_maker.sh
+```
